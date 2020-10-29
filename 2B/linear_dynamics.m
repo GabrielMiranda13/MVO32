@@ -2,8 +2,8 @@ function [Xdot,Y] = linear_dynamics(t,X,U,flag_cond)
 
 global g
 global aircraft
-global A B 
-global X_eq U_eq
+global trim_output
+global lin_output
 
 V=X(1);
 alpha_deg=X(2);
@@ -28,6 +28,11 @@ gamma_deg=theta_deg-alpha_deg;
 Tmax=aircraft.Tmax;
 n_rho=aircraft.n_rho;
 T=throttle*Tmax*(rho/1.225)^(n_rho);
+
+X_eq=trim_output(flag_cond).X_eq;
+U_eq=trim_output(flag_cond).U_eq;
+A=lin_output(flag_cond).A;
+B=lin_output(flag_cond).B;
 
 Xdot_eq=long_dynamics(0,X_eq,U_eq,flag_cond);
 

@@ -4,8 +4,8 @@ clc
 
 global g
 global aircraft
-global A B
-global X_eq U_eq
+global trim_output
+global lin_output
 
 g = 9.80665;
 
@@ -28,8 +28,8 @@ options = optimset('Display','iter','TolX',1e-10,'TolFun',1e-10);
 %--------------------------------------------------------------------------
 % Trimmed flight conditions:
 
-trim_output(length(trim_par)) = struct('X_eq',zeros(6,1),'U_eq',zeros(3,1),...
-    'Y_eq',zeros(6,1));
+trim_output = struct('X_eq',zeros(6,1),'U_eq',zeros(3,1),'Y_eq',zeros(6,1));
+trim_output(length(trim_par)) = trim_output;
 
 for flag_cond=1:length(trim_par)
     x_eq_0 = zeros(4,1);
@@ -65,7 +65,8 @@ end
 %--------------------------------------------------------------------------
 % Linearization around trimmed flight conditions:
 
-lin_output(length(trim_par)) = struct('A',zeros(6,6),'B',zeros(6,3));
+lin_output = struct('A',zeros(6,6),'B',zeros(6,3));
+lin_output(length(trim_par)) = lin_output;
 
 step_val = 1e-5;
 

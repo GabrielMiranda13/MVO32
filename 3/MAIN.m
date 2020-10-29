@@ -4,6 +4,8 @@ clc
 
 global g
 global aircraft
+global trim_output
+global lin_output
 
 g = 9.80665;
 
@@ -26,8 +28,8 @@ options = optimset('Display','iter','TolX',1e-10,'TolFun',1e-10);
 %--------------------------------------------------------------------------
 % Trimmed flight conditions:
 
-trim_output(length(trim_par)) = struct('X_eq',zeros(6,1),'U_eq',zeros(3,1),...
-    'Y_eq',zeros(6,1));
+trim_output = struct('X_eq',zeros(6,1),'U_eq',zeros(3,1),'Y_eq',zeros(6,1));
+trim_output(length(trim_par)) = trim_output;
 
 for flag_cond=1:length(trim_par)
     x_eq_0 = zeros(4,1);
@@ -63,11 +65,12 @@ end
 %--------------------------------------------------------------------------
 % Linearization around trimmed flight conditions:
 
-lin_output(3) = struct('A',zeros(6,6),'B',zeros(6,3));
+lin_output = struct('A',zeros(6,6),'B',zeros(6,3));
+lin_output(length(trim_par)) = lin_output;
 
 step_val = 1e-5;
 
-for flag_cond=1:3
+for flag_cond=1:length(trim_par)
     X_eq = trim_output(flag_cond).X_eq;
     U_eq = trim_output(flag_cond).U_eq;
     
@@ -94,20 +97,28 @@ for flag_cond=1:3
     
 end
 
-% (exercise 5B)
+%---------------------------------------------------------------------------
+% Simulation of elevator doublet (linear)
 
-flag_cond=3;
+flag_cond_sim=1;
 
-A=lin_output(flag_cond).A;
-% V alpha_deg q_deg_s theta_deg h:
-A=A(1:5,1:5);
-[eigvec,eigval]=eig(A);
-eigval=diag(eigval);
+dt=0.050;
+tF=15;
+T=0:dt:tF;
 
-figure
-plot(real(eigval),imag(eigval),'bx')
-xlabel('Re(\lambda)')
-ylabel('Im(\lambda)')
+X0=trim_output(flag_cond_sim).X_eq;
+U0=trim_output(flag_cond_sim).U_eq;
+[X,Y]=ode4xy(@linear_elevator_doublet,T,X0,U0,flag_cond_sim);
+
+U=Y(:,7:9);
+Y=Y(:,1:6);
+
+plot_long
+plot_controls
+plot_outputs
+plot_path; 
+plot_3;
 
 
-B=lin_output(flag_cond).B;
+
+
