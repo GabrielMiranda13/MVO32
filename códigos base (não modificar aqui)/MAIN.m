@@ -61,7 +61,7 @@ for flag_cond=1:length(trim_par)
 end
 
 %--------------------------------------------------------------------------
-% (exercise 1) Simulation of trimmed flight conditions:
+% Simulation of trimmed flight conditions:
 
 % flag_cond_sim=1;
 % 
@@ -82,7 +82,7 @@ end
 % plot_path
 
 %--------------------------------------------------------------------------
-% (exercise 3) Simulation of initial condition (delta_alpha = 2 deg)
+% Simulation of initial condition (delta_alpha = 2 deg)
 
 % flag_cond_sim=3;
 % 
@@ -106,12 +106,12 @@ end
 % plot_path
 
 %--------------------------------------------------------------------------
-% (exercise 4) Simulation of elevator doublet
+% (exercise 2) Simulation of elevator doublet
 
-% flag_cond_sim=3;
+% flag_cond_sim=1;
 % 
 % dt=0.050;
-% tF=500;
+% tF=15;
 % T=0:dt:tF;
 % 
 % X0=trim_output(flag_cond_sim).X_eq;
@@ -127,7 +127,7 @@ end
 % plot_path
 
 %--------------------------------------------------------------------------
-% (exercise 5) Linearization around trimmed flight conditions:
+% Linearization around trimmed flight conditions:
 
 % lin_output(3) = struct('A',zeros(6,6),'B',zeros(6,3));
 % 

@@ -47,8 +47,8 @@ BB=[-D*cosd(alpha_deg)+L*sind(alpha_deg)+2*T*cosd(tau_p_deg)*cosd(iota_p_deg)-m*
 CC=[sind(alpha_deg); -cosd(alpha_deg)];
 DD=AA*(1/m*BB-q_rad_s*V*CC);
 
-V_dot=1/m*(-D+2*T*(cosd(alpha_deg)*cosd(tau_p_deg)*cosd(iota_p_deg)-sind(iota_p_deg)*sind(alpha_deg))-m*g*sind(theta_deg-alpha_deg));
-alpha_dot_rad_s=q_rad_s+1/m/V*(-L-2*T*(cosd(tau_p_deg)*cosd(iota_p_deg)));
+V_dot=DD(1);
+alpha_dot_rad_s=DD(2);
 q_dot_rad_s2=1/Iyy*(Ma+z_p*2*T*cosd(tau_p_deg)*cosd(iota_p_deg)+x_p*2*T*sind(iota_p_deg));
 theta_dot_deg_s=q_deg_s;
 h_dot=V*sind(theta_deg-alpha_deg);
