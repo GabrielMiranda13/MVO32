@@ -102,7 +102,7 @@ end
 flag_cond_sim=1;
 
 dt=0.050;
-tF=15;
+tF=30;
 T=0:dt:tF;
 
 X0=trim_output(flag_cond_sim).X_eq;
@@ -112,13 +112,11 @@ U0=trim_output(flag_cond_sim).U_eq;
 U=Y(:,7:9);
 Y=Y(:,1:6);
 
-X=X-X_eq;
-U=U-U_eq;
-
 plot_long
 plot_controls
 plot_outputs
 plot_path
+plot_2B
 
 %---------------------------------------------------------------------------
 % Simulation of elevator doublet (linear)
@@ -126,7 +124,7 @@ plot_path
 flag_cond_sim=1;
 
 dt=0.050;
-tF=15;
+tF=30;
 T=0:dt:tF;
 
 X0=trim_output(flag_cond_sim).X_eq;
@@ -136,16 +134,12 @@ U0=trim_output(flag_cond_sim).U_eq;
 U=Y(:,7:9);
 Y=Y(:,1:6);
 
-X=X-X_eq;
-U=U-U_eq;
-
 plot_long
 plot_controls
 plot_outputs
-plot_path
+plot_path; legend('nonlinear','linear')
+plot_2B
 
-figure(4)
-legend('nonlinear','linear')
 
 
 

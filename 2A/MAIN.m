@@ -138,7 +138,7 @@ plot_long
 plot_controls
 plot_outputs
 plot_path; legend('nonlinear','linear')
-plot_2A
+plot_2A;
 
 
 
