@@ -97,6 +97,28 @@ for flag_cond=1:length(trim_par)
     
 end
 
+%--------------------------------------------------------------------------
+% Simulation of elevator doublet (nonlinear)
+
+flag_cond_sim=1;
+
+dt=0.050;
+tF=15;
+T=0:dt:tF;
+
+X0=trim_output(flag_cond_sim).X_eq;
+U0=trim_output(flag_cond_sim).U_eq;
+[X,Y]=ode4xy(@elevator_doublet,T,X0,U0,flag_cond_sim);
+
+U=Y(:,7:9);
+Y=Y(:,1:6);
+
+plot_long
+plot_controls
+plot_outputs
+plot_path
+plot_3
+
 %---------------------------------------------------------------------------
 % Simulation of elevator doublet (linear)
 
@@ -116,8 +138,31 @@ Y=Y(:,1:6);
 plot_long
 plot_controls
 plot_outputs
-plot_path; 
+plot_path;
 plot_3;
+
+
+% ---------------------------------------------------------------------------
+% Simulation of elevator doublet (linear - short period)
+
+flag_cond_sim=1;
+
+dt=0.050;
+tF=15;
+T=0:dt:tF;
+
+X0=trim_output(flag_cond_sim).X_eq;
+U0=trim_output(flag_cond_sim).U_eq;
+[X,Y]=ode4xy(@linear_elevator_doublet,T,X0,U0,flag_cond_sim);
+
+U=Y(:,7:9);
+Y=Y(:,1:6);
+
+plot_long
+plot_controls
+plot_outputs
+plot_path;
+plot_3; 
 
 
 
