@@ -141,7 +141,6 @@ plot_outputs
 plot_path;
 plot_3;
 
-
 % ---------------------------------------------------------------------------
 % Simulation of elevator doublet (linear - short period)
 
@@ -150,6 +149,11 @@ flag_cond_sim=1;
 dt=0.050;
 tF=15;
 T=0:dt:tF;
+
+% O QUE FAZER AQUI?????
+A(:,1)=0;
+A(:,4:end)=0;
+lin_output(flag_cond_sim).A=A;
 
 X0=trim_output(flag_cond_sim).X_eq;
 U0=trim_output(flag_cond_sim).U_eq;
