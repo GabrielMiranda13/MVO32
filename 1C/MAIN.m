@@ -111,12 +111,12 @@ ylabel('Im(\lambda)')
 
 B=lin_output(flag_cond).B;
 
-damp=damp(eig(A_red))
-f_periodo_curto=imag(eigval(1))/2/pi;
-damp_periodo_curto=damp(1);
+[freq_rad_s,damping]=damp(A_red);
+f_periodo_curto=freq_rad_s(1)/2/pi;
+damp_periodo_curto=damping(1);
 
-f_fugoide=imag(eigval(3))/2/pi;
-damp_fugoide=damp(3);
+f_fugoide=freq_rad_s(3)/2/pi;
+damp_fugoide=damping(3);
 
 fprintf('   %-10s = %10.4f %-4s\n','freq',f_periodo_curto,'Hz (periodo curto)');
 fprintf('   %-10s = %10.4f %-4s\n','freq',f_fugoide,'Hz (fugoide)');
