@@ -14,23 +14,6 @@ aircraft = struct('S',116,'c',3.862,'b',32.757,...
 
 trim_par(1) = struct('V',230.15,'h',11582.4,'gamma_deg',0,...
     'thetadot_deg_s',0);
-
-%--------------------------------------------------------------------------
-% Validation of dynamic function:
-
-% X_test = [trim_par(1).V
-%     2
-%     10
-%     5
-%     trim_par(1).h
-%     0];
-% 
-% U_test = [0.5
-%     -5
-%     -5];
-% 
-% Xdot_test = long_dynamics(0,X_test,U_test,1)
-
 %--------------------------------------------------------------------------
 
 % https://www.mathworks.com/help/optim/ug/tolerances-and-stopping-criteria.html
