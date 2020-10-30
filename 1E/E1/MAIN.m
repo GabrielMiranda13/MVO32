@@ -11,10 +11,10 @@ g = 9.80665;
 Kn = -0.1; % escolher margem estática
 Cm_alpha = -0.0402;
 CL_alpha = 0.133;
-DX_CG = -Kn-Cm_alpha/CL_alpha;
+DX_CG = -Kn-Cm_alpha/CL_alpha; % deslocamento do CG
 
 aircraft = struct('S',116,'c',3.862,'b',32.757,...
-    'm',55788,'Iyy',3.344e6,'DX_CG',DX_CG,... % DX_CG (displacement CG)
+    'm',55788,'Iyy',3.344e6,'DX_CG',DX_CG,...
     'i_p_deg',2,'t_p_deg',1.5,'x_p',4.899,'z_p',1.435,... 
     'Tmax',100000,'n_rho',0.8);
 
@@ -65,3 +65,43 @@ for flag_cond=1:length(trim_par)
     fprintf('   %-10s = %10.4f %-4s\n','C_m',Y_eq(6),'');
     fprintf('\n');
 end
+
+lin_output(length(trim_par)) = struct('A',zeros(6,6),'B',zeros(6,3));
+
+step_val = 1e-5;
+
+for flag_cond=1:length(trim_par)
+    X_eq = trim_output(flag_cond).X_eq;
+    U_eq = trim_output(flag_cond).U_eq;
+    
+    A = zeros(length(X_eq),length(X_eq));
+    for j=1:length(X_eq)
+        dX=zeros(length(X_eq),1);
+        dX(j)=step_val;
+        Xdot_plus = long_dynamics(0,X_eq+dX,U_eq,flag_cond);
+        Xdot_minus = long_dynamics(0,X_eq-dX,U_eq,flag_cond);
+        A(:,j)=(Xdot_plus-Xdot_minus)/(2*dX(j));
+    end
+    
+    B = zeros(length(X_eq),length(U_eq));
+    for j=1:length(U_eq)
+        dU=zeros(length(U_eq),1);
+        dU(j)=step_val;
+        Xdot_plus = long_dynamics(0,X_eq,U_eq+dU,flag_cond);
+        Xdot_minus = long_dynamics(0,X_eq,U_eq-dU,flag_cond);
+        B(:,j)=(Xdot_plus-Xdot_minus)/(2*dU(j));
+    end
+    
+    lin_output(flag_cond).A = A;
+    lin_output(flag_cond).B = B;
+    
+end
+
+A=lin_output(flag_cond).A;
+% V alpha_deg q_deg_s theta_deg h:
+A_red=A(1:5,1:5);
+[eigvec,eigval]=eig(A_red);
+eigval=diag(eigval);
+
+eigval
+eigvec
