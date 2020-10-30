@@ -150,10 +150,17 @@ dt=0.050;
 tF=15;
 T=0:dt:tF;
 
-% O QUE FAZER AQUI?????
-A(:,1)=0;
-A(:,4:end)=0;
-lin_output(flag_cond_sim).A=A;
+% isolar apenas influência de alpha e q
+A_red=A;
+B_red=B;
+A_red(:,1)=0;
+A_red(:,4:end)=0;
+A_red(1,:)=0;
+A_red(4:end,:)=0;
+B_red(1,:)=0;
+B_red(4:end,:)=0;
+lin_output(flag_cond_sim).A=A_red;
+lin_output(flag_cond_sim).B=B_red;
 
 X0=trim_output(flag_cond_sim).X_eq;
 U0=trim_output(flag_cond_sim).U_eq;
@@ -166,7 +173,7 @@ plot_long
 plot_controls
 plot_outputs
 plot_path;
-plot_3; 
+plot_3;
 
 
 
