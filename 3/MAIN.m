@@ -151,14 +151,10 @@ tF=15;
 T=0:dt:tF;
 
 % isolar apenas influência de alpha e q
-A_red=A;
-B_red=B;
-A_red(:,1)=0;
-A_red(:,4:end)=0;
-A_red(1,:)=0;
-A_red(4:end,:)=0;
-B_red(1,:)=0;
-B_red(4:end,:)=0;
+A_red=zeros(size(A));
+B_red=zeros(size(B));
+A_red(2:3,2:3)=A(2:3,2:3);
+B_red(2:3,:)=B(2:3,:);
 lin_output(flag_cond_sim).A=A_red;
 lin_output(flag_cond_sim).B=B_red;
 
