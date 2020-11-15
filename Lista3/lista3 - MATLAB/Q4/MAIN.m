@@ -4,7 +4,7 @@ clc
 
 global g
 global aircraft
-global trim_output lin_output
+global count
 
 g = 9.80665;
 
@@ -32,9 +32,16 @@ options = optimset('Display','iter','TolX',1e-10,'TolFun',1e-10);
 %--------------------------------------------------------------------------
 % Trimmed flight conditions:
 
-trim_output = struct('X_eq',zeros(12,1),'U_eq',zeros(6,1),...
+id = {'Nominal','Cl_beta +20%','Cn_beta +20%', 'CY_beta +20%',...
+        'Cl_p +20%', 'Cn_p +20%', 'CY_p +20%', 'Cl_r +20%', 'Cn_r +20%',...
+        'CY_r +20%','Cl_beta -20%','Cn_beta -20%', 'CY_beta -20%',...
+        'Cl_p -20%', 'Cn_p -20%', 'CY_p -20%', 'Cl_r -20%', 'Cn_r -20%',...
+        'CY_r -20%'}
+
+for count = 0:18
+    
+trim_output(length(trim_par)) = struct('X_eq',zeros(12,1),'U_eq',zeros(6,1),...
     'Y_eq',zeros(10,1));
-trim_output(length(trim_par)) = trim_output;
 
 for flag_cond=1:length(trim_par)
     x_eq_0 = zeros(13,1);
@@ -45,43 +52,42 @@ for flag_cond=1:length(trim_par)
     trim_output(flag_cond).X_eq = X_eq;
     trim_output(flag_cond).U_eq = U_eq;
     trim_output(flag_cond).Y_eq = Y_eq;
-    trim_output(flag_cond).Xdot_eq = dynamics(0,X_eq,U_eq,flag_cond);
 
-    fprintf('----- A%d FLIGHT CONDITION -----\n\n',flag_cond);
-    fprintf('   %-10s = %10.4f %-4s\n','gamma',trim_par(flag_cond).gamma_deg,'deg');
-    fprintf('   %-10s = %10.4f %-4s\n','theta_dot',trim_par(flag_cond).thetadot_deg_s,'deg/s');
-    fprintf('   %-10s = %10.4f %-4s\n','psi_dot',trim_par(flag_cond).psidot_deg_s,'deg/s');
-    fprintf('\n');
-    fprintf('   %-10s = %10.2f %-4s\n','V',X_eq(1),'m/s');
-    fprintf('   %-10s = %10.4f %-4s\n','alpha',X_eq(2),'deg');
-    fprintf('   %-10s = %10.4f %-4s\n','q',X_eq(3),'deg/s');
-    fprintf('   %-10s = %10.4f %-4s\n','theta',X_eq(4),'deg');
-    fprintf('   %-10s = %10.1f %-4s\n','h',X_eq(5),'m');
-    fprintf('\n');
-    fprintf('   %-10s = %10.4f %-4s\n','beta',X_eq(7),'deg');
-    fprintf('   %-10s = %10.4f %-4s\n','phi',X_eq(8),'deg');
-    fprintf('   %-10s = %10.4f %-4s\n','p',X_eq(9),'deg/s');
-    fprintf('   %-10s = %10.4f %-4s\n','r',X_eq(10),'deg/s');
-    fprintf('   %-10s = %10.4f %-4s\n','psi',X_eq(11),'deg');
-    fprintf('\n');
-    fprintf('   %-10s = %10.2f %-4s\n','throttle_l',U_eq(1)*100,'%');
-    fprintf('   %-10s = %10.2f %-4s\n','throttle_r',U_eq(2)*100,'%');
-    fprintf('   %-10s = %10.2f %-4s\n','Thrust_l',Y_eq(2),'N');
-    fprintf('   %-10s = %10.2f %-4s\n','Thrust_r',Y_eq(3),'N');
-    fprintf('   %-10s = %10.4f %-4s\n','i_t',U_eq(3),'deg');
-    fprintf('   %-10s = %10.4f %-4s\n','delta_e',U_eq(4),'deg');
-    fprintf('   %-10s = %10.4f %-4s\n','delta_a',U_eq(5),'deg');
-    fprintf('   %-10s = %10.4f %-4s\n','delta_r',U_eq(6),'deg');
-    fprintf('\n');
-    fprintf('   %-10s = %10.4f %-4s\n','Mach',Y_eq(4),'');
-    fprintf('   %-10s = %10.4f %-4s\n','C_D',Y_eq(5),'');
-    fprintf('   %-10s = %10.4f %-4s\n','C_L',Y_eq(6),'');
-    fprintf('   %-10s = %10.4f %-4s\n','C_m',Y_eq(7),'');
-    fprintf('\n');
-    fprintf('   %-10s = %10.4f %-4s\n','C_Y',Y_eq(8),'');
-    fprintf('   %-10s = %10.4f %-4s\n','C_l',Y_eq(9),'');
-    fprintf('   %-10s = %10.4f %-4s\n','C_n',Y_eq(10),'');
-    fprintf('\n');
+%     fprintf('----- A%d FLIGHT CONDITION -----\n\n',flag_cond);
+%     fprintf('   %-10s = %10.4f %-4s\n','gamma',trim_par(flag_cond).gamma_deg,'deg');
+%     fprintf('   %-10s = %10.4f %-4s\n','theta_dot',trim_par(flag_cond).thetadot_deg_s,'deg/s');
+%     fprintf('   %-10s = %10.4f %-4s\n','psi_dot',trim_par(flag_cond).psidot_deg_s,'deg/s');
+%     fprintf('\n');
+%     fprintf('   %-10s = %10.2f %-4s\n','V',X_eq(1),'m/s');
+%     fprintf('   %-10s = %10.4f %-4s\n','alpha',X_eq(2),'deg');
+%     fprintf('   %-10s = %10.4f %-4s\n','q',X_eq(3),'deg/s');
+%     fprintf('   %-10s = %10.4f %-4s\n','theta',X_eq(4),'deg');
+%     fprintf('   %-10s = %10.1f %-4s\n','h',X_eq(5),'m');
+%     fprintf('\n');
+%     fprintf('   %-10s = %10.4f %-4s\n','beta',X_eq(7),'deg');
+%     fprintf('   %-10s = %10.4f %-4s\n','phi',X_eq(8),'deg');
+%     fprintf('   %-10s = %10.4f %-4s\n','p',X_eq(9),'deg/s');
+%     fprintf('   %-10s = %10.4f %-4s\n','r',X_eq(10),'deg/s');
+%     fprintf('   %-10s = %10.4f %-4s\n','psi',X_eq(11),'deg');
+%     fprintf('\n');
+%     fprintf('   %-10s = %10.2f %-4s\n','throttle_l',U_eq(1)*100,'%');
+%     fprintf('   %-10s = %10.2f %-4s\n','throttle_r',U_eq(2)*100,'%');
+%     fprintf('   %-10s = %10.2f %-4s\n','Thrust_l',Y_eq(2),'N');
+%     fprintf('   %-10s = %10.2f %-4s\n','Thrust_r',Y_eq(3),'N');
+%     fprintf('   %-10s = %10.4f %-4s\n','i_t',U_eq(3),'deg');
+%     fprintf('   %-10s = %10.4f %-4s\n','delta_e',U_eq(4),'deg');
+%     fprintf('   %-10s = %10.4f %-4s\n','delta_a',U_eq(5),'deg');
+%     fprintf('   %-10s = %10.4f %-4s\n','delta_r',U_eq(6),'deg');
+%     fprintf('\n');
+%     fprintf('   %-10s = %10.4f %-4s\n','Mach',Y_eq(4),'');
+%     fprintf('   %-10s = %10.4f %-4s\n','C_D',Y_eq(5),'');
+%     fprintf('   %-10s = %10.4f %-4s\n','C_L',Y_eq(6),'');
+%     fprintf('   %-10s = %10.4f %-4s\n','C_m',Y_eq(7),'');
+%     fprintf('\n');
+%     fprintf('   %-10s = %10.4f %-4s\n','C_Y',Y_eq(8),'');
+%     fprintf('   %-10s = %10.4f %-4s\n','C_l',Y_eq(9),'');
+%     fprintf('   %-10s = %10.4f %-4s\n','C_n',Y_eq(10),'');
+%     fprintf('\n');
 end
 
 
@@ -112,33 +118,11 @@ end
 % plot_outputs
 % plot_path
 
-
-%--------------------------------------------------------------------------
-% Simulation of aileron step (nonlinear)
-
-flag_cond_sim=1;
-
-dt=0.050;
-tF=20;
-
-T=0:dt:tF;
-
-X0=trim_output(flag_cond_sim).X_eq;
-U0=trim_output(flag_cond_sim).U_eq;
-[X,Y]=ode4xy(@aileron_step,T,X0,U0,flag_cond_sim);
-
-U=Y(:,11:16);
-Y=Y(:,1:10);
-
-plot_path
-plot_delta_latdir
-
 %--------------------------------------------------------------------------
 % Linearization around trimmed flight conditions:
 
-lin_output = struct('A',zeros(12,12),'B',zeros(12,6),...
+lin_output(length(trim_par)) = struct('A',zeros(12,12),'B',zeros(12,6),...
     'C',zeros(10,12),'D',zeros(10,6));
-lin_output(length(trim_par)) = lin_output;
 
 step_val = 1e-5;
 
@@ -176,26 +160,22 @@ for flag_cond=1:length(trim_par)
     
 end
 
-[eigvec,eigval]=eig(A);
-eigval=diag(eigval);
+if(count==0)
+    A_red = [A(7,7) A(7,10); A(10,7) A(10,10)];
+    [eigvec_red,eigval_red]=eig(A_red);
+    eigval_red=diag(eigval_red);
+end
 
+[frequency,damping] = damp(A);
 
-%--------------------------------------------------------------------------
-% Simulation of aileron step (linear)
+frequency_dutchroll{count+1,1} = id{count+1};
+frequency_dutchroll{count+1,2} = frequency(10);
+damping_dutchroll{count+1,1} = id{count+1};
+damping_dutchroll{count+1,2} = damping(10);
 
-flag_cond_sim=1;
+end
 
-dt=0.050;
-tF=20;
+eigval_red
+frequency_dutchroll
+damping_dutchroll
 
-T=0:dt:tF;
-
-X0=trim_output(flag_cond_sim).X_eq;
-U0=trim_output(flag_cond_sim).U_eq;
-[X,Y]=ode4xy(@linear_aileron_step,T,X0,U0,flag_cond_sim);
-
-U=Y(:,11:16);
-Y=Y(:,1:10);
-
-plot_path
-plot_delta_latdir
