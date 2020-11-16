@@ -133,6 +133,19 @@ plot_controls
 plot_outputs
 plot_path
 
+figure
+plot(X(:,11),X(:,8))
+xlabel('\psi [deg]')
+ylabel('\phi [deg]')
+
+
+
+
+
+
+
+
+
 
 %--------------------------------------------------------------------------
 % Linearization around trimmed flight conditions:
