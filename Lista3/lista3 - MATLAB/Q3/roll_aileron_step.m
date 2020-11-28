@@ -1,4 +1,4 @@
-function roll_aileron_step(delta_a_deg,T,trim_par,flag_cond)
+function tau_R = roll_aileron_step(delta_a_deg,T,trim_par,flag_cond)
 
 global aircraft
 
@@ -32,5 +32,6 @@ hold all
 xlabel('t [s]')
 ylabel('\Deltap [deg/s]')
 
+tau_R = -4*Ixx/(rho*V*S*b^2*Cl_p);
 
 end

@@ -4,7 +4,8 @@ clc
 
 global g
 global aircraft
-global trim_output lin_output
+global trim_output 
+global lin_output
 
 g = 9.80665;
 
@@ -213,5 +214,5 @@ tF=20;
 T=0:dt:tF;
 
 delta_a_deg = 5;
-roll_aileron_step(delta_a_deg,T,trim_par,flag_cond_sim);
+tau_R = roll_aileron_step(delta_a_deg,T,trim_par,flag_cond_sim)
 
